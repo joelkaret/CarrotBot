@@ -1,3 +1,5 @@
+import os
+
 import discord
 from discord.ext import commands
 from discord.utils import get
@@ -18,4 +20,4 @@ async def ping(ctx, *, message="hi"):
         await ctx.send(role.mention + ctx.author.mention + " says " + message)
 
 
-client.run("ODI1MzU5NDM0NjAyNTEyMzg4.YF8x3w.8MzJhl2xYl6lnIOlG0WGNxosaNQ")
+client.run(os.environ["PRIVATE_KEY"])
