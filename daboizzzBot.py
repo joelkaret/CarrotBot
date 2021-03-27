@@ -8,6 +8,7 @@ client = commands.Bot(command_prefix='&&')
 
 @client.event
 async def on_ready():
+    await client.change_presence(status=discord.Status.online, activity=discord.Game('&&ping To @da boiz'))    
     print('Bot is ready')
 
 
@@ -20,3 +21,5 @@ async def ping(ctx, *, message="hi"):
 
 
 client.run(os.environ["PRIVATE_KEY"])
+
+
