@@ -14,7 +14,7 @@ async def on_ready():
 
 @client.command()
 async def ping(ctx, *, message="hi"):
-    daboiz = 813734136169758780
+    daboiz = 799036164057071636
     role = get(ctx.guild.roles, id=daboiz)
     if role in ctx.author.roles:
         await ctx.send(role.mention + ctx.author.mention + " says " + message)
