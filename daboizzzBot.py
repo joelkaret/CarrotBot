@@ -1,5 +1,6 @@
 import os
-
+import discord
+import ssl
 from discord.ext import commands
 from discord.utils import get
 
@@ -20,6 +21,6 @@ async def ping(ctx, *, message="hi"):
         await ctx.send(role.mention + ctx.author.mention + " says " + message)
 
 
-client.run(os.environ["PRIVATE_KEY"])
+client.run(os.getenv("PRIVATE_KEY"))
 
 
