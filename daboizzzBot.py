@@ -26,8 +26,8 @@ async def ping(ctx, *message):
         await ctx.send(role.mention + ctx.author.mention + " says " + " ".join(message))
 
 
-@slash.slash(name="pingDaBoiz")
-async def ping2(ctx, *message, guild_ids=guild_ids):
+@slash.slash(name="pingDaBoiz", guild_ids=guild_ids, description="This will ping da boiz")
+async def ping2(ctx, *message):
     daboiz = 799036164057071636
     role = get(ctx.guild.roles, id=daboiz)
     for i in range(0, len(message)):
@@ -44,7 +44,7 @@ async def testWhoop(ctx, *message):
 
 
 @slash.slash(name="testWhoop", guild_ids=guild_ids)
-async def testWhoop2(ctx, *message):
+async def testWhoop2(ctx):
     await ctx.send(ctx.author.mention + " WHOOP!")
 
 
