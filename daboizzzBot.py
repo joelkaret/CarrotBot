@@ -13,11 +13,15 @@ async def on_ready():
 
 
 @client.command()
-async def ping(ctx, *, message="hi"):
+async def ping(ctx, *message="hi"):
     daboiz = 799036164057071636
     role = get(ctx.guild.roles, id=daboiz)
+    for i in range(0, len(message):
+        for j in range(0, len(message[i]):
+            if message[i][j] == "@":
+                role = "this is not a role"
     if role in ctx.author.roles:
-        await ctx.send(role.mention + ctx.author.mention + " says " + message)
-
+        await ctx.send(role.mention + ctx.author.mention + " says " + " ".join(message))
+    
 
 client.run(os.getenv("PRIVATE_KEY"))
