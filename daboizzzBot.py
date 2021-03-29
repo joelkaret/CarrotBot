@@ -39,7 +39,7 @@ async def ping2(ctx, *message):
 
 
 @client.command()
-async def testWhoop(ctx, *message):
+async def testWhoop(ctx, *message, description="This will WHOOP your ass!"):
     await ctx.send(ctx.author.mention + " WHOOP!")
 
 
