@@ -1,6 +1,7 @@
 
 import discord
 import json
+import time
 from discord.ext import commands
 from discord.utils import get
 from discord_slash import SlashCommand
@@ -13,9 +14,8 @@ def create_bot():
             prefixes = json.load(f)
         return prefixes[str(message.guild.id)]
 
-    bot = commands.Bot(command_prefix=get_prefix)
+    bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True)
     slash = SlashCommand(bot, sync_commands=True)
-    guild_ids = [713646548436910116]
     bot.remove_command("help")
 
     #When Bot Is Ready
@@ -53,9 +53,9 @@ def create_bot():
     #Help
     @bot.command()
     async def help(ctx):
-        await ctx.send("This is a temporary help command")
+        await ctx.send("ping - pings da boiz role\nwhoop - pings you")
 
-    @slash.slash(name="help", guild_ids=guild_ids, description="Displays the help menu")
+    @slash.slash(name="help", description="Displays the help menu")
     async def helpSlash(ctx):
         await ctx.send("This is a temporary help command")
 
@@ -71,24 +71,20 @@ def create_bot():
         if role in ctx.author.roles:
             await ctx.send(role.mention + ctx.author.mention + " says " + " ".join(message))
 
-    #@slash.slash(name="pingDaBoiz", guild_ids=guild_ids, description="This will ping da boiz")
-    #async def pingSlash(ctx, *message):
-    #    daboiz = 799036164057071636
-    #    role = get(ctx.guild.roles, id=daboiz)
-    #    for i in range(0, len(message)):
-    #        for j in range(0, len(message[i])):
-    #            if message[i][j] == "@":
-    #                role = "this is not a role"
-    #    if role in ctx.author.roles:
-    #        await ctx.send(role.mention + ctx.author.mention + " says " + " ".join(message))
-
     #Whoop
-    @bot.command(name="Whoop", description="This will WHOOP your ass!")
+    @bot.command(name="Whoop", description="This will ping you!")
     async def Whoop(ctx, *message):
         await ctx.send(ctx.author.mention + " WHOOP!")
 
-    @slash.slash(name="Whoop", guild_ids=guild_ids, description="This will WHOOP your ass!")
+    @slash.slash(name="Whoop", description="This will ping you!")
     async def WhoopSlash(ctx):
         await ctx.send(ctx.author.mention + " WHOOP!")
+
+    #Every 10 minutes sends a message, so it doesn't go inactive.
+    @bot.command(name="ActiveBot", description="Keeps bot active")
+    async def ActiveBot(ctx, *message):
+        while True:
+            await bot.get_channel(835963832718590023).send("active")
+            time.sleep(600)
 
     return bot
