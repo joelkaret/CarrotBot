@@ -2,6 +2,9 @@
 import discord
 import json
 import time
+import threading
+import asyncio
+from datetime import datetime, time, timedelta
 from discord.ext import commands
 from discord.utils import get
 from discord_slash import SlashCommand
@@ -17,6 +20,7 @@ def create_bot():
     bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True)
     slash = SlashCommand(bot, sync_commands=True)
     bot.remove_command("help")
+    WHEN = time(3, 59, 0)
 
     #When Bot Is Ready
     @bot.event
@@ -85,6 +89,39 @@ def create_bot():
     async def ActiveBot(ctx, *message):
         while True:
             await bot.get_channel(835963832718590023).send("active")
-            time.sleep(600)
+            await asyncio.sleep(600)
 
+    #Sends this command into a certain channel at 4am utc.
+    @bot.command(name="GEXP", description="Runs the gexp command")
+    async def Gexp(ctx, *message):
+        await ctx.send("Gexp command will now be run.")
+        while True:
+            if datetime.utcnow().hour == 3 and datetime.utcnow().minute == 59 and datetime.utcnow().second == 0:
+                await bot.get_channel(718527252970733659).send(".gexp")
+            else:
+                await asyncio.sleep(3600)
+
+    async def called_once_a_day():  # Fired every day
+        channel = bot.get_guild(713646548436910116).get_channel(718527252970733659)
+        await channel.send(".gexp")
+        print("this was called")
+
+    async def background_task():
+        print("this works")
+        now = datetime.utcnow()
+        if now.time() > WHEN:
+            tomorrow = datetime.combine(now.date() + timedelta(days=1), time(0))
+            seconds = (tomorrow - now).total_seconds()  # Seconds until tomorrow (midnight)
+            await asyncio.sleep(seconds)   # Sleep until tomorrow and then the loop will start 
+        while True:
+            now = datetime.utcnow()
+            target_time = datetime.combine(now.date(), WHEN)
+            seconds_until_target = (target_time - now).total_seconds()
+            await asyncio.sleep(seconds_until_target)  # Sleep until we hit the target time
+            await called_once_a_day()  # Call the helper function that sends the message
+            tomorrow = datetime.combine(now.date() + timedelta(days=1), time(0))
+            seconds = (tomorrow - now).total_seconds()  # Seconds until tomorrow (midnight)
+            await asyncio.sleep(seconds)   # Sleep until tomorrow and then the loop will start a new iteration
+
+    bot.loop.create_task(background_task())
     return bot
