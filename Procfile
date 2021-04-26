@@ -1,1 +1,1 @@
-worker: python daboizzzBot/main.py
+worker: python daboizzz-Discord-Bot/daboizzBot/main.py
