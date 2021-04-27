@@ -1,1 +1,1 @@
-worker: python daboizzBot/main.py
+worker: python CarrotBot/main.py
