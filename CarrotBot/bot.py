@@ -85,7 +85,7 @@ def create_bot():
     @bot.command(name="Say", descripition="Carrot will say this.")
     async def Say(ctx, *message):
         if ctx.author.id == 506884005195677696: #My Discord id
-            await ctx.send("".join(message))
+            await ctx.send(" ".join(message))
 
 
     async def called_once_a_day():  # Fired every day (at 3:59 UTC)
