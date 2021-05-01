@@ -55,15 +55,25 @@ def create_bot():
     #Help
     @bot.command()
     async def help(ctx):
-        await ctx.send("ping - pings da boiz role\nwhoop - pings you")
+        author = ctx.message.author
+
+        embed = discord.Embed(
+            colour = discord.Colour.purple()
+        )
+
+        embed.set_author(name='CarrotBot Help')
+        embed.add_field(name='daboiz', value='Pings daboiz', inline=False)
+        embed.add_field(name='whoop', value='Pings you, with funky message attached.', inline=False)
+        embed.add_field(name='More Coming Soon', value='.', inline=False)
+        await ctx.send(embed=embed)
 
     @slash.slash(name="help", description="Displays the help menu")
     async def helpSlash(ctx):
         await ctx.send("ping - pings da boiz role\nwhoop - pings you")
 
     #ping da boiz
-    @bot.command(name="ping", description="pings da boiz")
-    async def ping(ctx, *message):
+    @bot.command(name="daboiz", description="pings da boiz")
+    async def daboiz(ctx, *message):
         daboiz = 799036164057071636
         role = get(ctx.guild.roles, id=daboiz)
         for i in range(0, len(message)):
