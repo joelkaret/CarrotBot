@@ -11,3 +11,4 @@ multidict==5.1.0
 typing-extensions==3.7.4.3
 wincertstore==0.2
 yarl==1.6.3
+python-dotenv==0.10.1
