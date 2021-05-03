@@ -73,14 +73,15 @@ def create_bot():
 
     #ping da boiz
     @bot.command(name="daboiz", description="pings da boiz")
+    @commands.has_role("da boiz")
     async def daboiz(ctx, *message):
-        daboiz = 799036164057071636
-        role = get(ctx.guild.roles, id=daboiz)
+        role = get(ctx.guild.roles, name="da boiz")
+        allowed = True
         for i in range(0, len(message)):
             for j in range(0, len(message[i])):
                 if message[i][j] == "@":
-                    role = "this is not a role"
-        if role in ctx.author.roles:
+                    allowed = False
+        if allowed:
             await ctx.send(role.mention + ctx.author.mention + " says " + " ".join(message))
 
     #Whoop
@@ -92,10 +93,16 @@ def create_bot():
     async def WhoopSlash(ctx):
         await ctx.send(ctx.author.mention + " WHOOP!")
 
+    #Say
     @bot.command(name="Say", descripition="Carrot will say this.")
     async def Say(ctx, *message):
-        if ctx.author.id == 506884005195677696: #My Discord id
+        if ctx.author.id == 506884005195677696: #My Discord id - For Testing purposes only.
             await ctx.send(" ".join(message))
+    
+    #VCBlock
+    @bot.command(name="VCBlock", descripition="Will VCBlock Someone")
+    @commands.has_role("Guild Staff")
+    async def VCBlock(ctx, UserID, length):
+        await ctx.send("ok")
 
-    bot.loop.create_task(background_task())
     return bot 
