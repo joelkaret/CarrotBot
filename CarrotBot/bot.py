@@ -108,7 +108,7 @@ def create_bot():
     async def VCBlock(ctx, user: discord.Member):
         role = get(ctx.guild.roles, name="VC Channel Blocked")
         await user.add_roles(role)
-        await ctx.send(ctx.user.mention + " has been VC Channel Blocked")
+        await ctx.send(user + " has been VC Channel Blocked")
 
     #VCUnblock
     @bot.command(name="VCUnblock", descripition="Will VCUnblock Someone")
@@ -116,6 +116,6 @@ def create_bot():
     async def VCUnblock(ctx, user: discord.Member):
         role = get(ctx.guild.roles, name="VC Channel Blocked")
         await user.remove_roles(role)
-        await ctx.send(ctx.user.mention + " has been VC Channel Unblocked")
+        await ctx.send(user + " has been VC Channel Unblocked")
 
     return bot 
