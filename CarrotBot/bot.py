@@ -97,28 +97,5 @@ def create_bot():
         if ctx.author.id == 506884005195677696: #My Discord id
             await ctx.send(" ".join(message))
 
-
-    async def called_once_a_day():  # Fired every day (at 3:59 UTC)
-        channel = bot.get_guild(713646548436910116).get_channel(718527252970733659)
-        await channel.send(".gexp")
-        await asyncio.sleep(60)
-        await channel.send(".refresh")
-
-    async def background_task(): #Taken from Stack Overflow. https://stackoverflow.com/questions/63769685/discord-py-how-to-send-a-message-everyday-at-a-specific-time
-        now = datetime.utcnow()
-        if now.time() > WHEN:
-            tomorrow = datetime.combine(now.date() + timedelta(days=1), time(0))
-            seconds = (tomorrow - now).total_seconds()  # Seconds until tomorrow (midnight)
-            await asyncio.sleep(seconds)   # Sleep until tomorrow and then the loop will start 
-        while True:
-            now = datetime.utcnow()
-            target_time = datetime.combine(now.date(), WHEN)
-            seconds_until_target = (target_time - now).total_seconds()
-            await asyncio.sleep(seconds_until_target)  # Sleep until we hit the target time
-            await called_once_a_day()  # Call the helper function that sends the message
-            tomorrow = datetime.combine(now.date() + timedelta(days=1), time(0))
-            seconds = (tomorrow - now).total_seconds()  # Seconds until tomorrow (midnight)
-            await asyncio.sleep(seconds)   # Sleep until tomorrow and then the loop will start a new iteration
-
     bot.loop.create_task(background_task())
     return bot 
