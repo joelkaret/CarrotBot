@@ -64,7 +64,10 @@ def create_bot():
         embed.set_author(name='CarrotBot Help')
         embed.add_field(name='daboiz', value='Pings daboiz', inline=False)
         embed.add_field(name='whoop', value='Pings you, with funky message attached.', inline=False)
-        embed.add_field(name='More Coming Soon', value='.', inline=False)
+        embed.add_field(name='Staff Only', value='#############', inline=False)
+        embed.add_field(name='VCBlock', value='Will VC Block Someone', inline=False)
+        embed.add_field(name='VCUnblock', value='Will VC Unblock Someone', inline=False)
+
         await ctx.send(embed=embed)
 
     @slash.slash(name="help", description="Displays the help menu")
@@ -102,7 +105,17 @@ def create_bot():
     #VCBlock
     @bot.command(name="VCBlock", descripition="Will VCBlock Someone")
     @commands.has_role("Guild Staff")
-    async def VCBlock(ctx, UserID, length):
-        await ctx.send("ok")
+    async def VCBlock(ctx, user: discord.Member):
+        role = get(ctx.guild.roles, name="VC Channel Blocked")
+        await user.add_roles(role)
+        await ctx.send(ctx.user.mention + " has been VC Channel Blocked")
+
+    #VCUnblock
+    @bot.command(name="VCUnblock", descripition="Will VCUnblock Someone")
+    @commands.has_role("Guild Staff")
+    async def VCUnblock(ctx, user: discord.Member):
+        role = get(ctx.guild.roles, name="VC Channel Blocked")
+        await user.remove_roles(role)
+        await ctx.send(ctx.user.mention + " has been VC Channel Unblocked")
 
     return bot 
