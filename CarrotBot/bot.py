@@ -3,6 +3,7 @@ import json
 import time
 import threading
 import asyncio
+import csv
 from datetime import datetime, time, timedelta
 from discord.ext import commands
 from discord.utils import get
@@ -117,5 +118,92 @@ def create_bot():
         role = get(ctx.guild.roles, name="VC Channel Blocked")
         await user.remove_roles(role)
         await ctx.send(f"{user.mention} has been VC Channel Unblocked")
+
+    #Leaderboards
+    @bot.command(name="UpdateLeaderboard", description="Will update the leaderboard", aliases=["UpdLdb"])
+    @commands.has_role("Guild Staff")
+    async def UpdateLeaderboard(ctx):
+        channel = bot.get_channel(836258539806654544)
+        await ctx.channel.purge(limit=1)
+        overall = readCSV("leaderboard_overall.csv")
+        solos = readCSV("leaderboard_solos.csv")
+        doubles = readCSV("leaderboard_doubles.csv")
+        threes = readCSV("leaderboard_threes.csv")
+        fours = readCSV("leaderboard_fours.csv")
+        fourVSfour = readCSV("leaderboard_4v4.csv")
+        await channel.send(f"""
+__Overall Winstreak__
+        {ArrayToString(overall)}
+__Solo Winstreak__
+        {ArrayToString(solos)}
+__Doubles Winstreak__
+        {ArrayToString(doubles)}
+__3s Winstreak__
+        {ArrayToString(threes)}
+__4s Winstreak__
+        {ArrayToString(fours)}
+__4v4 Winstreak__
+        {ArrayToString(fourVSfour)}
+        """)
+        await ctx.send("Bedwars Winstreak Leaderboard Updated")
+        
+    def ArrayToString(array):
+        string = ""
+        count = 1
+        for i in range (0,len(array)):
+            values = array[i].split(',')
+            string = f"{string}{count}. `{values[0]}` - {values[1]}\n        "
+            count += 1
+        return string
+
+    def readCSV(filename):
+        file = open(filename, 'rt')
+        lines = file.read().splitlines()
+        return lines
+
+    def csvToArray(csvLines):
+        array = []
+        numberOfLines = len(csvLines)
+        for i in range (0,numberOfLines):
+            line = csvLines[i]
+            values = line.split(',')
+            array.append(values)
+        return array
+
+    def writeCSV(filename, array):
+        with open(filename, 'w', newline='') as file:
+            csv.writer(file, delimiter=',').writerows(array)
+
+    def addToLeaderboard(file, ign, winstreak):
+        leaderboard = csvToArray(readCSV(file))
+        entry = [ign, winstreak]
+        for i in range (0, len(leaderboard)-1):
+            if entry[0] == leaderboard[i][0]:
+                leaderboard.pop(i)
+        leaderboard.append(entry)
+        #BubbleSort
+        swapped = True
+        while swapped:
+            swapped = False
+            for i in range (0, len(leaderboard)-1):
+                print(leaderboard)#TEST
+                if int(leaderboard[i][1]) > int(leaderboard[i+1][1]):
+                    temp = leaderboard[i]
+                    leaderboard[i] = leaderboard[i+1]
+                    leaderboard[i+1] = temp
+                    swapped = True
+        writeCSV(file, leaderboard)
+
+    @bot.command(name="SolosAdd", description="Will add a winstreak to the solos leaderboard")
+    @commands.has_role("Guild Staff")
+    async def SolosAdd(ctx, ign, winstreak):
+        print("1")#TEST
+        addToLeaderboard("leaderboard_solos.csv", ign, winstreak)
+        UpdateLeaderboard(ctx)
+        print("2")#TEST
+
+        
+
+
 
     return bot 
