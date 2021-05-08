@@ -119,9 +119,7 @@ def create_bot():
         await user.remove_roles(role)
         await ctx.send(f"{user.mention} has been VC Channel Unblocked")
 
-    #Leaderboards
-    @bot.command(name="UpdateLeaderboard", description="Will update the leaderboard", aliases=["UpdLdb"])
-    @commands.has_role("Guild Staff")
+#Leaderboards
     async def UpdateLeaderboard(ctx):
         channel = bot.get_channel(836258539806654544)
         await ctx.channel.purge(limit=1)
@@ -194,16 +192,40 @@ __4v4 Winstreak__
                     swapped = True
         writeCSV(file, leaderboard)
 
+    @bot.command(name="OverallAdd", description="Will add a winstreak to the overall leaderboard")
+    @commands.has_role("Guild Staff")
+    async def OverallAdd(ctx, ign, winstreak):
+        addToLeaderboard("leaderboard_overall.csv", ign, winstreak)
+        await UpdateLeaderboard(ctx)
+
     @bot.command(name="SolosAdd", description="Will add a winstreak to the solos leaderboard")
     @commands.has_role("Guild Staff")
     async def SolosAdd(ctx, ign, winstreak):
-        print("1")#TEST
         addToLeaderboard("leaderboard_solos.csv", ign, winstreak)
-        UpdateLeaderboard(ctx)
-        print("2")#TEST
+        await UpdateLeaderboard(ctx)
 
-        
+    @bot.command(name="DoublesAdd", description="Will add a winstreak to the doubles leaderboard")
+    @commands.has_role("Guild Staff")
+    async def DoublesAdd(ctx, ign, winstreak):
+        addToLeaderboard("leaderboard_doubles.csv", ign, winstreak)
+        await UpdateLeaderboard(ctx)
 
+    @bot.command(name="ThreesAdd", description="Will add a winstreak to the threes leaderboard")
+    @commands.has_role("Guild Staff")
+    async def ThreesAdd(ctx, ign, winstreak):
+        addToLeaderboard("leaderboard_threes.csv", ign, winstreak)
+        await UpdateLeaderboard(ctx)
 
+    @bot.command(name="FoursAdd", description="Will add a winstreak to the fours leaderboard")
+    @commands.has_role("Guild Staff")
+    async def FoursAdd(ctx, ign, winstreak):
+        addToLeaderboard("leaderboard_fours.csv", ign, winstreak)
+        await UpdateLeaderboard(ctx)
+
+    @bot.command(name="4v4Add", description="Will add a winstreak to the 4v4 leaderboard")
+    @commands.has_role("Guild Staff")
+    async def FourVSFourAdd(ctx, ign, winstreak):
+        addToLeaderboard("leaderboard_4v4.csv", ign, winstreak)
+        await UpdateLeaderboard(ctx)
 
     return bot 
