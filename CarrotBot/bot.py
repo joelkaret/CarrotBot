@@ -175,7 +175,7 @@ __4v4 Winstreak__
     def addToLeaderboard(file, ign, winstreak):
         leaderboard = csvToArray(readCSV(file))
         entry = [ign, winstreak]
-        for i in range (0, len(leaderboard)-1):
+        for i in range (0, len(leaderboard)):
             if entry[0] == leaderboard[i][0]:
                 leaderboard.pop(i)
         leaderboard.append(entry)
@@ -184,8 +184,7 @@ __4v4 Winstreak__
         while swapped:
             swapped = False
             for i in range (0, len(leaderboard)-1):
-                print(leaderboard)#TEST
-                if int(leaderboard[i][1]) > int(leaderboard[i+1][1]):
+                if int(leaderboard[i][1]) < int(leaderboard[i+1][1]):
                     temp = leaderboard[i]
                     leaderboard[i] = leaderboard[i+1]
                     leaderboard[i+1] = temp
