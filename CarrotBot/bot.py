@@ -122,7 +122,7 @@ def create_bot():
 #Leaderboards
     async def UpdateLeaderboard(ctx):
         channel = bot.get_channel(836258539806654544)
-        await ctx.channel.purge(limit=1)
+        await channel.purge(limit=1)
         overall = readCSV("leaderboard_overall.csv")
         solos = readCSV("leaderboard_solos.csv")
         doubles = readCSV("leaderboard_doubles.csv")
