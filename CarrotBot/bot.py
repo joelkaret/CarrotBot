@@ -4,6 +4,7 @@ import threading
 import asyncio
 import csv
 import boto3
+import os
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import get
@@ -20,19 +21,22 @@ def create_bot():
     slash = SlashCommand(bot, sync_commands=True)
     bot.remove_command("help")
     load_dotenv() # Will load environment variables from a .env file
-    s3 = boto3.resource('s3')
-    overallS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_overall.csv')
-    solosS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_solos.csv')
-    doublesS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_doubles.csv')
-    threesS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_threes.csv')
-    foursS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_fours.csv')
-    fourVSfourS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_4v4.csv')
-    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_overall.csv', 'leaderboard_overall.csv')
-    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_solos.csv', 'leaderboard_solos.csv')
-    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_doubles.csv', 'leaderboard_doubles.csv')
-    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_threes.csv', 'leaderboard_threes.csv')
-    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_fours.csv', 'leaderboard_fours.csv')
-    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_4v4.csv', 'leaderboard_4v4.csv')
+    ACCESS_ID = os.getenv("ACCESS_ID")
+    ACCESS_KEY = os.getenv("ACCESS_KEY")
+    REGION = os.getenv("REGION")
+    s3_resource = boto3.resource('s3', aws_access_key_id=ACCESS_ID, aws_secret_access_key=ACCESS_KEY, region_name=REGION)
+    overallS3 = s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_overall.csv')
+    solosS3 = s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_solos.csv')
+    doublesS3 = s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_doubles.csv')
+    threesS3 = s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_threes.csv')
+    foursS3 = s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_fours.csv')
+    fourVSfourS3 = s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_4v4.csv')
+    s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_overall.csv').download_file('leaderboard_overall.csv')
+    s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_solos.csv').download_file('leaderboard_solos.csv')
+    s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_doubles.csv').download_file('leaderboard_doubles.csv')
+    s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_threes.csv').download_file('leaderboard_threes.csv')
+    s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_fours.csv').download_file('leaderboard_fours.csv')
+    s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_4v4.csv').download_file('leaderboard_4v4.csv')
 
     #When Bot Is Ready
     @bot.event
