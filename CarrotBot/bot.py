@@ -1,10 +1,10 @@
 import discord
 import json
-import time
 import threading
 import asyncio
 import csv
-from datetime import datetime, time, timedelta
+import boto3
+from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import get
 from discord_slash import SlashCommand
@@ -19,7 +19,20 @@ def create_bot():
     bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True)
     slash = SlashCommand(bot, sync_commands=True)
     bot.remove_command("help")
-    WHEN = time(3, 59, 0)
+    load_dotenv() # Will load environment variables from a .env file
+    s3 = boto3.resource('s3')
+    overallS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_overall.csv')
+    solosS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_solos.csv')
+    doublesS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_doubles.csv')
+    threesS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_threes.csv')
+    foursS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_fours.csv')
+    fourVSfourS3 = s3.get_object(Bucket='bedwarswinstreaksleaderboard', Key='leaderboard_4v4.csv')
+    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_overall.csv', 'leaderboard_overall.csv')
+    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_solos.csv', 'leaderboard_solos.csv')
+    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_doubles.csv', 'leaderboard_doubles.csv')
+    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_threes.csv', 'leaderboard_threes.csv')
+    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_fours.csv', 'leaderboard_fours.csv')
+    s3.Bucket('bedwarswinstreaksleaderboard').download_file('leaderboard_4v4.csv', 'leaderboard_4v4.csv')
 
     #When Bot Is Ready
     @bot.event
@@ -168,11 +181,12 @@ __4v4 Winstreak__
             array.append(values)
         return array
 
-    def writeCSV(filename, array):
+    def writeCSV(filename, array, nameS3):
         with open(filename, 'w', newline='') as file:
             csv.writer(file, delimiter=',').writerows(array)
+        nameS3.upload_file(filename)
 
-    def addToLeaderboard(file, ign, winstreak):
+    def addToLeaderboard(file, ign, winstreak, nameS3):
         leaderboard = csvToArray(readCSV(file))
         entry = [ign, winstreak]
         for i in range (0, len(leaderboard)):
@@ -189,42 +203,42 @@ __4v4 Winstreak__
                     leaderboard[i] = leaderboard[i+1]
                     leaderboard[i+1] = temp
                     swapped = True
-        writeCSV(file, leaderboard)
+        writeCSV(file, leaderboard, nameS3)
 
     @bot.command(name="OverallAdd", description="Will add a winstreak to the overall leaderboard")
     @commands.has_role("Guild Staff")
     async def OverallAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_overall.csv", ign, winstreak)
+        addToLeaderboard("leaderboard_overall.csv", ign, winstreak, overallS3)
         await UpdateLeaderboard(ctx)
 
     @bot.command(name="SolosAdd", description="Will add a winstreak to the solos leaderboard")
     @commands.has_role("Guild Staff")
     async def SolosAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_solos.csv", ign, winstreak)
+        addToLeaderboard("leaderboard_solos.csv", ign, winstreak, solosS3)
         await UpdateLeaderboard(ctx)
 
     @bot.command(name="DoublesAdd", description="Will add a winstreak to the doubles leaderboard")
     @commands.has_role("Guild Staff")
     async def DoublesAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_doubles.csv", ign, winstreak)
+        addToLeaderboard("leaderboard_doubles.csv", ign, winstreak, doublesS3)
         await UpdateLeaderboard(ctx)
 
     @bot.command(name="ThreesAdd", description="Will add a winstreak to the threes leaderboard")
     @commands.has_role("Guild Staff")
     async def ThreesAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_threes.csv", ign, winstreak)
+        addToLeaderboard("leaderboard_threes.csv", ign, winstreak, threesS3)
         await UpdateLeaderboard(ctx)
 
     @bot.command(name="FoursAdd", description="Will add a winstreak to the fours leaderboard")
     @commands.has_role("Guild Staff")
     async def FoursAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_fours.csv", ign, winstreak)
+        addToLeaderboard("leaderboard_fours.csv", ign, winstreak), foursS3
         await UpdateLeaderboard(ctx)
 
     @bot.command(name="4v4Add", description="Will add a winstreak to the 4v4 leaderboard")
     @commands.has_role("Guild Staff")
     async def FourVSFourAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_4v4.csv", ign, winstreak)
+        addToLeaderboard("leaderboard_4v4.csv", ign, winstreak, fourVSfourS3)
         await UpdateLeaderboard(ctx)
 
     return bot 
