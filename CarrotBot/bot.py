@@ -38,6 +38,10 @@ def create_bot():
     s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_fours.csv').download_file('leaderboard_fours.csv')
     s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_4v4.csv').download_file('leaderboard_4v4.csv')
 
+    #Check is me
+    async def is_me(ctx):
+        return ctx.author.id == 506884005195677696 #MyID
+
     #When Bot Is Ready
     @bot.event
     async def on_ready():
@@ -116,9 +120,9 @@ def create_bot():
 
     #Say
     @bot.command(name="Say", descripition="Carrot will say this.")
+    @commands.check(is_me)
     async def Say(ctx, *message):
-        if ctx.author.id == 506884005195677696: #My Discord id - For Testing purposes only.
-            await ctx.send(" ".join(message))
+        await ctx.send(" ".join(message))
     
     #VCBlock
     @bot.command(name="VCBlock", descripition="Will VCBlock Someone")
@@ -138,7 +142,7 @@ def create_bot():
 
     #Leaderboards
     @bot.command(name="UpdateLeaderboard", descripition="Updates the leaderboard", aliases=["UpdLdb","LdbUpd"])
-    @commands.has_role("Guild Staff")
+    @commands.check(is_me)
     async def UpdateLeaderboard(ctx):
         channel = bot.get_channel(836258539806654544)
         await channel.purge(limit=1)
