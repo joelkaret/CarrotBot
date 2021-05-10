@@ -137,7 +137,7 @@ def create_bot():
         await ctx.send(f"{user.mention} has been VC Channel Unblocked")
 
     #Leaderboards
-    @bot.command(name="UpdateLeaderboard", descripition="Updates the leaderboard", aliases=["UpdLdb"])
+    @bot.command(name="UpdateLeaderboard", descripition="Updates the leaderboard", aliases=["UpdLdb","LdbUpd"])
     @commands.has_role("Guild Staff")
     async def UpdateLeaderboard(ctx):
         channel = bot.get_channel(836258539806654544)
@@ -201,7 +201,7 @@ def create_bot():
     def addToLeaderboard(file, ign, winstreak, nameS3):
         leaderboard = csvToArray(readCSV(file))
         entry = [ign, winstreak]
-        for i in range (0, len(leaderboard)):
+        for i in range (0, len(leaderboard)-1):
             if entry[0] == leaderboard[i][0]:
                 leaderboard.pop(i)
         leaderboard.append(entry)
@@ -219,12 +219,12 @@ def create_bot():
     
     def removeFromLeaderboard(file, ign, nameS3):
         leaderboard = csvToArray(readCSV(file))
-        for i in range (0, len(leaderboard)):
+        for i in range (0, len(leaderboard)-1):
             if leaderboard[i][0] == ign:
                 leaderboard.pop(i)
         writeCSV(file, leaderboard, nameS3)
 
-    @bot.command(name="LeaderboardAdd", descripition="Add a winstreak to any leaderboard", aliases=["LdbAdd"])
+    @bot.command(name="LeaderboardAdd", descripition="Add a winstreak to any leaderboard", aliases=["LdbAdd","AddLdb"])
     @commands.has_role("Guild Staff")
     async def LeaderboardAdd(ctx, mode, ign, winstreak):
         mode = mode.lower()
@@ -249,10 +249,11 @@ def create_bot():
             leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
             addToLeaderboard(leaderboardFile, ign, winstreak, nameS3)
+            await UpdateLeaderboard(ctx)
         else:
             await ctx.send("Command Failed")
 
-    @bot.command(name="LeaderboardRemove", descripition="Add a winstreak to any leaderboard", aliases=["LdbDel"])
+    @bot.command(name="LeaderboardRemove", descripition="Add a winstreak to any leaderboard", aliases=["LdbDel","DelLdb","LdbRem","RemLdb"])
     @commands.has_role("Guild Staff")
     async def LeaderboardRemove(ctx, mode, ign):
         mode = mode.lower()
@@ -277,6 +278,7 @@ def create_bot():
             leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
             removeFromLeaderboard(leaderboardFile, ign, nameS3)
+            await UpdateLeaderboard(ctx)
         else:
             await ctx.send("Command Failed")
 
