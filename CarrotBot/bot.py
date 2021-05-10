@@ -173,7 +173,7 @@ def create_bot():
         for i in range (0,UpTo):
             values = array[i].split(',')
             if values[i] == Mininum:
-                string = f"{string}. *{values[0]} - {values[1]}*\n"
+                string = f"{string}*{values[0]} - {values[1]}*\n"
             else:
                 string = f"{string}{count}. `{values[0]}` - {values[1]}\n"
             count += 1
