@@ -225,7 +225,7 @@ def create_bot():
         writeCSV(file, leaderboard, nameS3)
 
     @bot.command(name="LeaderboardAdd", descripition="Add a winstreak to any leaderboard", aliases=["LdbAdd"])
-    @command.has_role("Guild Staff")
+    @commands.has_role("Guild Staff")
     async def LeaderboardAdd(ctx, mode, ign, winstreak):
         mode = mode.lower()
         nameS3 = "Error"
@@ -247,7 +247,7 @@ def create_bot():
             await ctx.send("Command Failed")
 
     @bot.command(name="LeaderboardRemove", descripition="Add a winstreak to any leaderboard", aliases=["LdbDel"])
-    @command.has_role("Guild Staff")
+    @commands.has_role("Guild Staff")
     async def LeaderboardRemove(ctx, mode, ign):
         mode = mode.lower()
         nameS3 = "Error"
