@@ -136,7 +136,9 @@ def create_bot():
         await user.remove_roles(role)
         await ctx.send(f"{user.mention} has been VC Channel Unblocked")
 
-#Leaderboards
+    #Leaderboards
+    @bot.command(name="UpdateLeaderboard", descripition="Updates the leaderboard", aliases=["UpdLdb"])
+    @commands.has_role("Guild Staff")
     async def UpdateLeaderboard(ctx):
         channel = bot.get_channel(836258539806654544)
         await channel.purge(limit=1)
@@ -147,18 +149,18 @@ def create_bot():
         fours = readCSV("leaderboard_fours.csv")
         fourVSfour = readCSV("leaderboard_4v4.csv")
         await channel.send(f"""
-__Overall Winstreak__
-        {ArrayToString(overall)}
-__Solo Winstreak__
-        {ArrayToString(solos)}
-__Doubles Winstreak__
-        {ArrayToString(doubles)}
-__3s Winstreak__
-        {ArrayToString(threes)}
-__4s Winstreak__
-        {ArrayToString(fours)}
-__4v4 Winstreak__
-        {ArrayToString(fourVSfour)}
+**Overall Winstreak**
+{ArrayToString(overall)}
+**Solo Winstreak**
+{ArrayToString(solos)}
+**Doubles Winstreak**
+{ArrayToString(doubles)}
+**3s Winstreak**
+{ArrayToString(threes)}
+**4s Winstreak**
+{ArrayToString(fours)}
+**4v4 Winstreak**
+{ArrayToString(fourVSfour)}
         """)
         await ctx.send("Bedwars Winstreak Leaderboard Updated")
         
