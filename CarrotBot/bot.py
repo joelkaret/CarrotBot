@@ -169,7 +169,7 @@ def create_bot():
         count = 1
         for i in range (0,len(array)):
             values = array[i].split(',')
-            string = f"{string}{count}. `{values[0]}` - {values[1]}\n        "
+            string = f"{string}{count}. `{values[0]}` - {values[1]}\n"
             count += 1
         return string
 
