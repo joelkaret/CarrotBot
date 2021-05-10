@@ -172,7 +172,7 @@ def create_bot():
             UpTo = 10
         for i in range (0,UpTo):
             values = array[i].split(',')
-            if values[0] == "Mininum":
+            if values[0] == "Minimum":
                 string = f"{string}*{values[0]} - {values[1]}*\n"
             else:
                 string = f"{string}{count}. `{values[0]}` - {values[1]}\n"
@@ -216,6 +216,13 @@ def create_bot():
                     leaderboard[i+1] = temp
                     swapped = True
         writeCSV(file, leaderboard, nameS3)
+    
+    def removeFromLeaderboard(file, ign, nameS3):
+        leaderboard = csvToArray(readCSV(file))
+        for i in range (0, len(leaderboard)):
+            if leaderboard[i][0] == ign:
+                leaderboard.pop(i)
+        writeCSV(file, leaderboard, nameS3)
 
     @bot.command(name="LeaderboardAdd", descripition="Add a winstreak to any leaderboard", aliases=["LdbAdd"])
     @command.has_role("Guild Staff")
@@ -236,6 +243,28 @@ def create_bot():
             nameS3 = fourVSfourS3
         if nameS3 != "Error":
             addToLeaderboard("leaderboard_overall.csv", ign, winstreak, nameS3)
+        else:
+            await ctx.send("Command Failed")
+
+    @bot.command(name="LeaderboardRemove", descripition="Add a winstreak to any leaderboard", aliases=["LdbDel"])
+    @command.has_role("Guild Staff")
+    async def LeaderboardRemove(ctx, mode, ign):
+        mode = mode.lower()
+        nameS3 = "Error"
+        if mode == "overall":
+            nameS3 = overallS3
+        elif mode == "solos":
+            nameS3 = solosS3
+        elif mode == "doubles":
+            nameS3 = doublesS3
+        elif mode == "threes":
+            nameS3 = threesS3
+        elif mode == "fours":
+            nameS3 = foursS3
+        elif mode == "4v4":
+            nameS3 = fourVSfourS3
+        if nameS3 != "Error":
+            removeFromLeaderboard("leaderboard_overall.csv", ign, nameS3)
         else:
             await ctx.send("Command Failed")
 
