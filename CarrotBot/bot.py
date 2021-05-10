@@ -231,18 +231,24 @@ def create_bot():
         nameS3 = "Error"
         if mode == "overall":
             nameS3 = overallS3
+            leaderboardFile = "leaderboard_overall.csv"
         elif mode == "solos":
             nameS3 = solosS3
+            leaderboardFile = "leaderboard_solos.csv"
         elif mode == "doubles":
             nameS3 = doublesS3
+            leaderboardFile = "leaderboard_doubles.csv"
         elif mode == "threes":
             nameS3 = threesS3
+            leaderboardFile = "leaderboard_threes.csv"
         elif mode == "fours":
             nameS3 = foursS3
+            leaderboardFile = "leaderboard_fours.csv"
         elif mode == "4v4":
             nameS3 = fourVSfourS3
+            leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
-            addToLeaderboard("leaderboard_overall.csv", ign, winstreak, nameS3)
+            addToLeaderboard(leaderboardFile, ign, winstreak, nameS3)
         else:
             await ctx.send("Command Failed")
 
@@ -253,18 +259,24 @@ def create_bot():
         nameS3 = "Error"
         if mode == "overall":
             nameS3 = overallS3
+            leaderboardFile = "leaderboard_overall.csv"
         elif mode == "solos":
             nameS3 = solosS3
+            leaderboardFile = "leaderboard_solos.csv"
         elif mode == "doubles":
             nameS3 = doublesS3
+            leaderboardFile = "leaderboard_doubles.csv"
         elif mode == "threes":
             nameS3 = threesS3
+            leaderboardFile = "leaderboard_threes.csv"
         elif mode == "fours":
             nameS3 = foursS3
+            leaderboardFile = "leaderboard_fours.csv"
         elif mode == "4v4":
             nameS3 = fourVSfourS3
+            leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
-            removeFromLeaderboard("leaderboard_overall.csv", ign, nameS3)
+            removeFromLeaderboard(leaderboardFile, ign, nameS3)
         else:
             await ctx.send("Command Failed")
 
