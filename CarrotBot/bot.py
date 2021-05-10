@@ -236,7 +236,7 @@ __4v4 Winstreak__
     @bot.command(name="FoursAdd", description="Will add a winstreak to the fours leaderboard")
     @commands.has_role("Guild Staff")
     async def FoursAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_fours.csv", ign, winstreak), foursS3
+        addToLeaderboard("leaderboard_fours.csv", ign, winstreak, foursS3)
         await UpdateLeaderboard(ctx)
 
     @bot.command(name="4v4Add", description="Will add a winstreak to the 4v4 leaderboard")
