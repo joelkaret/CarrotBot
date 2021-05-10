@@ -167,9 +167,15 @@ def create_bot():
     def ArrayToString(array):
         string = ""
         count = 1
-        for i in range (0,len(array)):
+        UpTo = len(array)
+        if len(array) > 10:
+            UpTo = 10
+        for i in range (0,UpTo):
             values = array[i].split(',')
-            string = f"{string}{count}. `{values[0]}` - {values[1]}\n"
+            if values[i] == Mininum:
+                string = f"{string}. *{values[0]} - {values[1]}*\n"
+            else:
+                string = f"{string}{count}. `{values[0]}` - {values[1]}\n"
             count += 1
         return string
 
