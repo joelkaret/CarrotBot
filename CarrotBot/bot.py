@@ -217,40 +217,26 @@ def create_bot():
                     swapped = True
         writeCSV(file, leaderboard, nameS3)
 
-    @bot.command(name="OverallAdd", description="Will add a winstreak to the overall leaderboard")
-    @commands.has_role("Guild Staff")
-    async def OverallAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_overall.csv", ign, winstreak, overallS3)
-        await UpdateLeaderboard(ctx)
-
-    @bot.command(name="SolosAdd", description="Will add a winstreak to the solos leaderboard")
-    @commands.has_role("Guild Staff")
-    async def SolosAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_solos.csv", ign, winstreak, solosS3)
-        await UpdateLeaderboard(ctx)
-
-    @bot.command(name="DoublesAdd", description="Will add a winstreak to the doubles leaderboard")
-    @commands.has_role("Guild Staff")
-    async def DoublesAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_doubles.csv", ign, winstreak, doublesS3)
-        await UpdateLeaderboard(ctx)
-
-    @bot.command(name="ThreesAdd", description="Will add a winstreak to the threes leaderboard")
-    @commands.has_role("Guild Staff")
-    async def ThreesAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_threes.csv", ign, winstreak, threesS3)
-        await UpdateLeaderboard(ctx)
-
-    @bot.command(name="FoursAdd", description="Will add a winstreak to the fours leaderboard")
-    @commands.has_role("Guild Staff")
-    async def FoursAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_fours.csv", ign, winstreak, foursS3)
-        await UpdateLeaderboard(ctx)
-
-    @bot.command(name="4v4Add", description="Will add a winstreak to the 4v4 leaderboard")
-    @commands.has_role("Guild Staff")
-    async def FourVSFourAdd(ctx, ign, winstreak):
-        addToLeaderboard("leaderboard_4v4.csv", ign, winstreak, fourVSfourS3)
-        await UpdateLeaderboard(ctx)
+    @bot.command(name="LeaderboardAdd", descripition="Add a winstreak to any leaderboard", aliases=["LdbAdd"])
+    @command.has_role("Guild Staff")
+    async def LeaderboardAdd(ctx, mode, ign, winstreak):
+        mode = mode.lower()
+        nameS3 = "Error"
+        if mode == "overall":
+            nameS3 = overallS3
+        elif mode == "solos":
+            nameS3 = solosS3
+        elif mode == "doubles":
+            nameS3 = doublesS3
+        elif mode == "threes":
+            nameS3 = threesS3
+        elif mode == "fours":
+            nameS3 = foursS3
+        elif mode == "4v4":
+            nameS3 = fourVSfourS3
+        if nameS3 != "Error":
+            addToLeaderboard("leaderboard_overall.csv", ign, winstreak, nameS3)
+        else:
+            await ctx.send("Command Failed")
 
     return bot 
