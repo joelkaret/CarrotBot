@@ -1,7 +1,5 @@
 import discord
 import json
-import threading
-import asyncio
 import csv
 import boto3
 import os
@@ -11,6 +9,7 @@ from discord.utils import get
 from discord_slash import SlashCommand
 
 def create_bot():
+
     #Define prefix for given server
     def get_prefix(client, message):
         with open('prefixes.json', 'r') as f:
@@ -18,7 +17,7 @@ def create_bot():
         return prefixes[str(message.guild.id)]
 
     bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True)
-    slash = SlashCommand(bot, sync_commands=True)
+    slash = SlashCommand(bot, sync_commands=True, override_type=True)
     bot.remove_command("help")
     load_dotenv() # Will load environment variables from a .env file
     ACCESS_ID = os.getenv("ACCESS_ID")
@@ -38,15 +37,29 @@ def create_bot():
     s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_fours.csv').download_file('leaderboard_fours.csv')
     s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_4v4.csv').download_file('leaderboard_4v4.csv')
 
-    #Check is me
-    async def is_me(ctx):
-        return ctx.author.id == 506884005195677696 #MyID
-
     #When Bot Is Ready
     @bot.event
     async def on_ready():
         await bot.change_presence(status=discord.Status.online, activity=discord.Game('&ping To @da boiz'))
         print('Bot is ready')
+        
+    @bot.command()
+    async def load(ctx, extension):
+        bot.load_extension(f'cogs.{extension}')
+
+    @bot.command()
+    async def unload(ctx, extension):
+        bot.unload_extension(f'cogs.{extension}')
+
+    for filename in os.listdir('CarrotBot/cogs'):
+        if filename.endswith('.py'):
+            bot.load_extension(f'cogs.{filename[:-3]}')
+
+    #Check is me
+    async def is_me(ctx):
+        return ctx.author.id == 506884005195677696 #MyID
+
+
 
     #Prefixes
     @bot.event
@@ -75,48 +88,49 @@ def create_bot():
         await ctx.send("Prefix has been changed to " + prefix)
 
     #Help
-    @bot.command()
-    async def help(ctx):
-        author = ctx.message.author
+    #@bot.command()
+    #async def help(ctx):
+    #    author = ctx.message.author
 
-        embed = discord.Embed(
-            colour = discord.Colour.purple()
-        )
+    #    embed = discord.Embed(
+    #        colour = discord.Colour.purple()
+    #    )
 
-        embed.set_author(name='CarrotBot Help')
-        embed.add_field(name='daboiz', value='Pings daboiz', inline=False)
-        embed.add_field(name='whoop', value='Pings you, with funky message attached.', inline=False)
-        embed.add_field(name='Staff Only', value='#############', inline=False)
-        embed.add_field(name='VCBlock', value='Will VC Block Someone', inline=False)
-        embed.add_field(name='VCUnblock', value='Will VC Unblock Someone', inline=False)
+    
+#    embed.set_author(name='CarrotBot Help')
+    #    embed.add_field(name='daboiz', value='Pings daboiz', inline=False)
+    #    embed.add_field(name='whoop', value='Pings you, with funky message attached.', inline=False)
+    #    embed.add_field(name='Staff Only', value='#############', inline=False)
+    #    embed.add_field(name='VCBlock', value='Will VC Block Someone', inline=False)
+    #    embed.add_field(name='VCUnblock', value='Will VC Unblock Someone', inline=False)
+#
+    #    await ctx.send(embed=embed)
 
-        await ctx.send(embed=embed)
-
-    @slash.slash(name="help", description="Displays the help menu")
-    async def helpSlash(ctx):
-        await ctx.send("ping - pings da boiz role\nwhoop - pings you")
+    #@slash.slash(name="help", description="Displays the help menu")
+    #async def helpSlash(ctx):
+   #     await ctx.send("ping - pings da boiz role\nwhoop - pings you")
 
     #ping da boiz
-    @bot.command(name="daboiz", description="pings da boiz")
-    @commands.has_role("da boiz")
-    async def daboiz(ctx, *message):
-        role = get(ctx.guild.roles, name="da boiz")
-        allowed = True
-        for i in range(0, len(message)):
-            for j in range(0, len(message[i])):
-                if message[i][j] == "@":
-                    allowed = False
-        if allowed:
-            await ctx.send(role.mention + ctx.author.mention + " says " + " ".join(message))
+    #@bot.command(name="daboiz", description="pings da boiz")
+    #@commands.has_role("da boiz")
+    #async def daboiz(ctx, *message):
+    #    role = get(ctx.guild.roles, name="da boiz")
+    #    allowed = True
+    #    for i in range(0, len(message)):
+    #        for j in range(0, len(message[i])):
+    #            if message[i][j] == "@":
+    #                allowed = False
+    #    if allowed:
+    #        await ctx.send(role.mention + ctx.author.mention + " says " + " ".join(message))
 
     #Whoop
-    @bot.command(name="Whoop", description="This will ping you!")
-    async def Whoop(ctx, *message):
-        await ctx.send(ctx.author.mention + " WHOOP!")
+    #@bot.command(name="Whoop", description="This will ping you!")
+    #async def Whoop(ctx, *message):
+    #    await ctx.send(ctx.author.mention + " WHOOP!")
 
-    @slash.slash(name="Whoop", description="This will ping you!")
-    async def WhoopSlash(ctx):
-        await ctx.send(ctx.author.mention + " WHOOP!")
+    #@slash.slash(name="Whoop", description="This will ping you!")
+    #async def WhoopSlash(ctx):
+    #    await ctx.send(ctx.author.mention + " WHOOP!")
 
     #Say
     @bot.command(name="Say", descripition="Carrot will say this.")
