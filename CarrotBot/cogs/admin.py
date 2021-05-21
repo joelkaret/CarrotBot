@@ -47,8 +47,6 @@ class admin(commands.Cog):
         for filename in os.listdir('CarrotBot/cogs'):
             if filename.endswith('.py'):
                 self.bot.unload_extension(f'cogs.{filename[:-3]}')
-        
-
 
 def setup(bot):
     bot.add_cog(admin(bot))

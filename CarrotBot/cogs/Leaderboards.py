@@ -84,6 +84,21 @@ class leaderboards(commands.Cog):
                 leaderboard.pop(i)
         self.writeCSV(file, leaderboard, nameS3)
 
+    def ArrayToString(self, array):
+        string = ""
+        count = 1
+        UpTo = len(array)
+        if len(array) > 10:
+            UpTo = 10
+        for i in range (0,UpTo):
+            values = array[i].split(',')
+            if values[0] == "Minimum":
+                string = f"{string}*{values[0]} - {values[1]}*\n"
+            else:
+                string = f"{string}{count}. `{values[0]}` - {values[1]}\n"
+            count += 1
+        return string
+
 
 
     #Commands
@@ -92,7 +107,7 @@ class leaderboards(commands.Cog):
                       aliases=["UpdLdb","LdbUpd"])
     @commands.check(is_me)
     async def UpdateLeaderboard(self, ctx):
-        channel = commands.get_channel(836258539806654544)
+        channel = self.bot.get_channel(836258539806654544)
         await channel.purge(limit=1)
         overall = self.readCSV("leaderboard_overall.csv")
         solos = self.readCSV("leaderboard_solos.csv")
