@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import boto3
 import csv
+import requests
 
 
 
@@ -30,8 +31,8 @@ class leaderboards(commands.Cog):
     s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_fours.csv').download_file('leaderboard_fours.csv')
     s3_resource.Object('bedwarswinstreakleaderboard', 'leaderboard_4v4.csv').download_file('leaderboard_4v4.csv')
     
-    
-    
+
+
     #Check
     async def is_me(ctx):
         return ctx.author.id == 506884005195677696 #My ID
@@ -39,6 +40,24 @@ class leaderboards(commands.Cog):
 
     
     #Functions
+    def usernameToUuid(self, username):
+        try:
+            url = f'https://api.mojang.com/users/profiles/minecraft/{username}?'
+            response = requests.get(url)
+            uuid = response.json()['id']
+        except:
+            uuid = username
+        return uuid
+
+    def uuidToUsername(self, uuid):
+        try:
+            url = f'https://api.mojang.com/user/profiles/{uuid}/names'
+            response = requests.get(url)
+            username = response.json()[-1]['name']
+        except:
+            username = uuid
+        return username
+
     def readCSV(self, filename):
         file = open(filename, 'rt')
         lines = file.read().splitlines()
@@ -60,7 +79,8 @@ class leaderboards(commands.Cog):
 
     def addToLeaderboard(self, file, ign, winstreak, nameS3):
         leaderboard = self.csvToArray(self.readCSV(file))
-        entry = [ign, winstreak]
+        uuid = self.usernameToUuid(ign)
+        entry = [uuid, winstreak]
         for i in range (0, len(leaderboard)-1):
             if entry[0] == leaderboard[i][0]:
                 leaderboard.pop(i)
@@ -78,29 +98,41 @@ class leaderboards(commands.Cog):
         self.writeCSV(file, leaderboard, nameS3)
     
     def removeFromLeaderboard(self, file, ign, nameS3):
+        uuid = self.usernameToUuid(ign)
         leaderboard = self.csvToArray(self.readCSV(file))
         for i in range (0, len(leaderboard)-1):
-            if leaderboard[i][0] == ign:
+            if leaderboard[i][0] == uuid:
                 leaderboard.pop(i)
         self.writeCSV(file, leaderboard, nameS3)
 
     def ArrayToString(self, array):
-        string = ""
+        string = ''
         count = 1
         UpTo = len(array)
         if len(array) > 10:
             UpTo = 10
-        for i in range (0,UpTo):
+        i = 0
+        while i < UpTo:
             values = array[i].split(',')
-            if values[0] == "Minimum":
-                string = f"{string}*{values[0]} - {values[1]}*\n"
+            values2 = ['False&^%',-69]
+            if len(array) > i+1:
+                values2 = array[i+1].split(',')
+                username2 = self.uuidToUsername(values2[0])
+            username = self.uuidToUsername(values[0])
+            winstreak = values[1]
+            if username == 'Minimum':
+                string = f'{string}*{username} - {winstreak}*\n'
+            elif values[1] == values2[1] and username2 != 'Minimum':
+                string = f'{string}{count}. `{username}` & `{username2}` - {winstreak}\n'
+                array.pop(i+1)
+                if len(array) < UpTo:
+                    UpTo -= 1
             else:
-                string = f"{string}{count}. `{values[0]}` - {values[1]}\n"
+                string = f'{string}{count}. `{username}` - {winstreak}\n'
             count += 1
+            i += 1
         return string
-
-
-
+    
     #Commands
     @commands.command(name="UpdateLeaderboard", 
                       descripition="Updates the leaderboard", 
@@ -108,27 +140,19 @@ class leaderboards(commands.Cog):
     @commands.check(is_me)
     async def UpdateLeaderboard(self, ctx):
         channel = self.bot.get_channel(836258539806654544)
-        await channel.purge(limit=1)
+        await channel.purge(limit=10)
         overall = self.readCSV("leaderboard_overall.csv")
         solos = self.readCSV("leaderboard_solos.csv")
         doubles = self.readCSV("leaderboard_doubles.csv")
         threes = self.readCSV("leaderboard_threes.csv")
         fours = self.readCSV("leaderboard_fours.csv")
         fourVSfour = self.readCSV("leaderboard_4v4.csv")
-        await channel.send(f"""
-**Overall Winstreak**
-{self.ArrayToString(overall)}
-**Solo Winstreak**
-{self.ArrayToString(solos)}
-**Doubles Winstreak**
-{self.ArrayToString(doubles)}
-**3s Winstreak**
-{self.ArrayToString(threes)}
-**4s Winstreak**
-{self.ArrayToString(fours)}
-**4v4 Winstreak**
-{self.ArrayToString(fourVSfour)}
-        """)
+        await channel.send(f'**Overall Winstreak**\n{self.ArrayToString(overall)}')
+        await channel.send(f'**Solo Winstreak**\n{self.ArrayToString(solos)}')
+        await channel.send(f'**Doubles Winstreak**\n{self.ArrayToString(doubles)}')
+        await channel.send(f'**3s Winstreak**\n{self.ArrayToString(threes)}')
+        await channel.send(f'**4s Winstreak**\n{self.ArrayToString(fours)}')
+        await channel.send(f'**4v4 Winstreak**\n{self.ArrayToString(fourVSfour)}')
         await ctx.send("Bedwars Winstreak Leaderboard Updated")
 
     @commands.command(name="LeaderboardAdd", 
@@ -189,9 +213,11 @@ class leaderboards(commands.Cog):
             leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
             self.removeFromLeaderboard(leaderboardFile, ign, nameS3)
-            await self.UpdateLeaderboard(ctx)
+            #await self.UpdateLeaderboard(ctx)
         else:
             await ctx.send("Command Failed")
+
+            
 
 def setup(bot):
     bot.add_cog(leaderboards(bot))
