@@ -213,7 +213,7 @@ class leaderboards(commands.Cog):
             leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
             self.removeFromLeaderboard(leaderboardFile, ign, nameS3)
-            #await self.UpdateLeaderboard(ctx)
+            await self.UpdateLeaderboard(ctx)
         else:
             await ctx.send("Command Failed")
 
