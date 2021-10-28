@@ -81,9 +81,12 @@ class leaderboards(commands.Cog):
         leaderboard = self.csvToArray(self.readCSV(file))
         uuid = self.usernameToUuid(ign)
         entry = [uuid, winstreak]
-        for i in range (0, len(leaderboard)):
-            if entry[0] == leaderboard[i][0]:
-                leaderboard.pop(i)
+        try:
+            for i in range (0, len(leaderboard)-1):
+                if entry[0] == leaderboard[i][0]:
+                    leaderboard.pop(i)
+        except:
+            pass #didnt want to indent code :/
         leaderboard.append(entry)
         #BubbleSort
         swapped = True
@@ -100,10 +103,12 @@ class leaderboards(commands.Cog):
     def removeFromLeaderboard(self, file, ign, nameS3):
         uuid = self.usernameToUuid(ign)
         leaderboard = self.csvToArray(self.readCSV(file))
-        for i in range (0, len(leaderboard)):
-            if leaderboard[i][0] == uuid:
-                leaderboard.pop(i)
-        self.writeCSV(file, leaderboard, nameS3)
+        try:
+            for i in range (0, len(leaderboard)):
+                if leaderboard[i][0] == uuid:
+                    leaderboard.pop(i)
+        except:
+            self.writeCSV(file, leaderboard, nameS3)
 
     def ArrayToString(self, array):
         string = ''
