@@ -47,7 +47,8 @@ class logger(commands.Cog):
         try:
             await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`) in ***{msg.guild.name} : {msg.channel.name}***\n{msg.content}")
             if msg.attachments:
-                await log_channel.send(f"{msg.attachments}[0]")
+                for i in msg.attachments:
+                    await log_channel.send(f"{msg.attachments[i]}")
             
         except Exception:
             print("'logs' channel not found, or bot missing permissions")
