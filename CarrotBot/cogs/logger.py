@@ -13,6 +13,8 @@ class logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
+        if msg.author.id == 825359434602512388:
+            return
         if msg.channel.name == "officer-chat":
             await self.log_officer_Chat(msg)
         elif msg.channel.name == "core-members":
