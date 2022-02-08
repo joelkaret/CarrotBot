@@ -45,7 +45,7 @@ class logger(commands.Cog):
         loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="all")
         try:
-            await log_channel.send(f"*{msg.content}*, sent by **{msg.author.nick}** who is also **{msg.author}")
+            await log_channel.send(f"**{msg.author.nick}** OR **{msg.author}\n{msg.content}")
         except Exception:
             print("'logs' channel not found, or bot missing permissions")
     
