@@ -29,7 +29,7 @@ class logger(commands.Cog):
         loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="officer-chat")
         try:
-            await log_channel.send(f"**{msg.author.nick}**(`{msg.author}`)\n{msg.content}")
+            await log_channel.send(f"{"-"*10}\n**{msg.author.nick}**(`{msg.author}`)\n{msg.content}")
         except Exception:
             print("'logs' channel not found, or bot missing permissions")
 
@@ -37,7 +37,7 @@ class logger(commands.Cog):
         loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="core-members")
         try:
-            await log_channel.send(f"**{msg.author.nick}**(`{msg.author}`)\n{msg.content}")
+            await log_channel.send(f"{"-"*10}\n**{msg.author.nick}**(`{msg.author}`)\n{msg.content}")
         except Exception:
             print("'logs' channel not found, or bot missing permissions")
 
@@ -45,7 +45,7 @@ class logger(commands.Cog):
         loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="all")
         try:
-            await log_channel.send(f"**{msg.author.nick}**(`{msg.author}`) in *{msg.guild.name} : {msg.channel.name}*\n{msg.content}")
+            await log_channel.send(f"{"-"*10}\n{msg.author.avatar_url}**{msg.author.nick}**(`{msg.author}`) in *{msg.guild.name} : {msg.channel.name}*\n{msg.content}")
             
         except Exception:
             print("'logs' channel not found, or bot missing permissions")
