@@ -24,7 +24,7 @@ class logger(commands.Cog):
 
 
     async def log_officer_chat(self, msg):
-        loggerguild = 940647396461912134
+        loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="officer-chat")
         try:
             await log_channel.send(f"*{msg.content}*, sent by **{msg.author.nick}** who is also **{msg.author}")
@@ -32,7 +32,7 @@ class logger(commands.Cog):
             print("'logs' channel not found, or bot missing permissions")
 
     async def log_core_members(self, msg):
-        loggerguild = 940647396461912134
+        loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="core-members")
         try:
             await log_channel.send(f"*{msg.content}*, sent by **{msg.author.nick}** who is also **{msg.author}")
@@ -40,7 +40,7 @@ class logger(commands.Cog):
             print("'logs' channel not found, or bot missing permissions")
 
     async def log_all(self, msg):
-        loggerguild = 940647396461912134
+        loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="all")
         try:
             await log_channel.send(f"*{msg.content}*, sent by **{msg.author.nick}** who is also **{msg.author}")
