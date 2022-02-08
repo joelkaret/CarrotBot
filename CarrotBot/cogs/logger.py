@@ -18,7 +18,7 @@ class logger(commands.Cog):
         if msg.channel.name == "officer-chat":
             await self.log_officer_Chat(msg)
         elif msg.channel.name == "core-members":
-            await self.log_officer_Chat(msg)
+            await self.log_core_members(msg)
         else:
             await self.log_all(msg)
         self.bot.process_commands(msg)
@@ -45,7 +45,7 @@ class logger(commands.Cog):
         loggerguild = self.bot.get_guild(940647396461912134)
         log_channel = discord.utils.get(loggerguild.channels, name="all")
         try:
-            await log_channel.send(f"**{msg.author.nick}** OR **{msg.author}\n{msg.content}")
+            await log_channel.send(f"**{msg.author.nick}** OR **{msg.author}** in **{msg.channel.name}**\n{msg.content}")
         except Exception:
             print("'logs' channel not found, or bot missing permissions")
     
