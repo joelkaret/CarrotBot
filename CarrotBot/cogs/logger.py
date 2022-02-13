@@ -43,10 +43,10 @@ class logger(commands.Cog):
         log_channel = False
         for channeli in logger_channels:
             if msg.channel.name == channeli.name:
-                log_channel = discord.utils.get(log_guild.channels, name="msg.channel.name")
+                log_channel = discord.utils.get(log_guild.channels, name=msg.channel.name)
         if log_channel == False: 
             await log_guild.create_text_channel(f"{msg.channel.name}")
-            log_channel = discord.utils.get(log_guild.channels, name="msg.channel.name")
+            log_channel = discord.utils.get(log_guild.channels, name=msg.channel.name)
         
         try:
             await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`)\n{msg.content}")
