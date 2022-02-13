@@ -31,7 +31,7 @@ class logger(commands.Cog):
         for channel in logger_channels:
             if msg.channel.name == channel.name:
                 log_channel = channel.name
-        if log_channel: 
+        if not log_channel: 
             log_channel = await loggerguild.create_text_channel(msg.channel.name, category = log_category)
         
         try:
