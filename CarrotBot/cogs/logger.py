@@ -22,7 +22,7 @@ class logger(commands.Cog):
         log_category = False
         for category in logger_categories:
             if msg.category.name == category.name:
-                log_category = category.name
+                log_category = category
         if log_category == False:
             log_category = await log_guild.create_category(msg.guild.name)
 
@@ -30,7 +30,7 @@ class logger(commands.Cog):
         log_channel = False
         for channel in logger_channels:
             if msg.channel.name == channel.name:
-                log_channel = channel.name
+                log_channel = channel
         if log_channel == False: 
             log_channel = await log_guild.create_text_channel(msg.channel.name, category = log_category)
         
