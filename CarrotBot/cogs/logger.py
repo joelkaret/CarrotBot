@@ -26,7 +26,7 @@ class logger(commands.Cog):
         if not category:
             log_category = await loggerguild.create_category(category)
 
-        logger_channels = discord.utils.get(loggerguild.logger_category.channels)
+        logger_channels = discord.utils.get(loggerguild.log_category.channels)
         log_channel = False
         for channel in logger_channels:
             if msg.channel.name == channel.name:
