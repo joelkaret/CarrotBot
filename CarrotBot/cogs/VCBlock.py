@@ -8,7 +8,7 @@ class VCBlocking(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-
+ 
     #VCBlock
     @commands.command(name="VCBlock", 
                       descripition="Will VCBlock Someone")

@@ -7,45 +7,35 @@ class logger(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    #Check
-    async def is_me(ctx):
-        return ctx.author.id == 506884005195677696 #MyID
-
     @commands.Cog.listener()
     async def on_message(self, msg):
         if msg.guild.id == 940647396461912134:
             return
-        if msg.channel.name == "officer-chat":
-            await self.log_officer_Chat(msg)
-        elif msg.channel.name == "core-members":
-            await self.log_core_members(msg)
         else:
             await self.log_all(msg)
         self.bot.process_commands(msg)
 
-
-
-    async def log_officer_chat(self, msg):
-        loggerguild = self.bot.get_guild(940647396461912134)
-        log_channel = discord.utils.get(loggerguild.channels, name="officer-chat")
-        try:
-            await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`)\n{msg.content}")
-        except Exception:
-            print("'logs' channel not found, or bot missing permissions")
-
-    async def log_core_members(self, msg):
-        loggerguild = self.bot.get_guild(940647396461912134)
-        log_channel = discord.utils.get(loggerguild.channels, name="core-members")
-        try:
-            await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`)\n{msg.content}")
-        except Exception:
-            print("'logs' channel not found, or bot missing permissions")
-
     async def log_all(self, msg):
         loggerguild = self.bot.get_guild(940647396461912134)
-        log_channel = discord.utils.get(loggerguild.channels, name="all")
+
+        logger_categories = discord.utils.get(loggerguild.categories)
+        log_category = False
+        for category in logger_categories:
+            if msg.category.name == category.name:
+                log_category = category.name
+        if not category:
+            log_category = await loggerguild.create_category(category)
+
+        logger_channels = discord.utils.get(loggerguild.logger_category.channels)
+        log_channel = False
+        for channel in logger_channels:
+            if msg.channel.name == channel.name:
+                log_channel = channel.name
+        if log_channel: 
+            log_channel = await loggerguild.create_text_channel(msg.channel.name, category = log_category)
+        
         try:
-            await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`) in ***{msg.guild.name} : {msg.channel.name}***\n{msg.content}")
+            await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`) in \n{msg.content}")
             if msg.attachments:
                 for i in msg.attachments:
                     await log_channel.send(f"{i}")
