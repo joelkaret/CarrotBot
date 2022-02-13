@@ -24,7 +24,7 @@ class logger(commands.Cog):
             if msg.category.name == category.name:
                 log_category = category.name
         if log_category == False:
-            log_category = await log_guild.create_category(category)
+            log_category = await self.bot.create_channel(log_guild, category, type=discord.ChannelType.category)
 
         logger_channels = discord.utils.get(log_guild.log_category.channels)
         log_channel = False
@@ -32,7 +32,8 @@ class logger(commands.Cog):
             if msg.channel.name == channel.name:
                 log_channel = channel.name
         if log_channel == False: 
-            log_channel = await log_guild.create_text_channel(msg.channel.name, category = log_category)
+            log_channel = await self.bot.create_channel(log_guild, msg.channel.name, type=discord.ChannelType.text, category = log_category)
+            log_category = self.bot.create_channel(log_guild, category, type=discord.ChannelType.category)
         
         try:
             await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`) in \n{msg.content}")
