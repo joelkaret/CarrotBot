@@ -14,7 +14,6 @@ class logger(commands.Cog):
             return
         else:
             await self.log_all(msg)
-        self.bot.process_commands(msg)
 
     async def log_all(self, msg):
         log_guild = self.bot.get_guild(940647396461912134)
