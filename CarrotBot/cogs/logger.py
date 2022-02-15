@@ -53,6 +53,9 @@ class logger(commands.Cog):
             if msg.attachments:
                 for i in msg.attachments:
                     await log_channel.send(f"{i}")
+            if msg.embeds:
+                for i in msg.embeds:
+                    await log_channel.send(f"{i}")
             
         except Exception:
             print(msg.content, msg.author)
