@@ -48,8 +48,10 @@ class logger(commands.Cog):
                 content = content.replace(pingmsg, f'***Ping-Role:{i.name}***')
             for i in channel_mentions:
                 pingmsg = f"<@#{i.id}>"
-                content = content.replace(pingmsg, f'***Channel:{i.name}***')    
+                content = content.replace(pingmsg, f'***Channel:{i.name}***')
             content = content.replace('@','***PING: EVERYONE***')
+            for i in msg.reference:
+                await log_channel.send(f"REPLY TO {i.resolved.author.name} msg: ```{i.resolved.content}```:")
             await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`)\n{content}")
             for i in msg.attachments:
                 await log_channel.send(i)
