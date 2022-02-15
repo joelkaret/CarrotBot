@@ -14,7 +14,7 @@ class logger(commands.Cog):
             return
         else:
             await self.log_all(msg)
-        self.bot.process_commands(msg)
+        await self.bot.process_commands(msg)
 
     async def log_all(self, msg):
         log_guild = self.bot.get_guild(940647396461912134)
@@ -50,17 +50,20 @@ class logger(commands.Cog):
                 pingmsg = f"<@#{i.id}>"
                 content = content.replace(pingmsg, f'***Channel:{i.name}***')
             content = content.replace('@','***PING: EVERYONE***')
-            for i in msg.reference:
-                await log_channel.send(f"REPLY TO {i.resolved.author.name} msg: ```{i.resolved.content}```:")
-            await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`)\n{content}")
+            if msg.reference:
+                await log_channel.send(f"{'-'*50}\n```reply to {msg.reference.resolved.author}: {msg.reference.resolved.content}:```")
+            else:
+                await log_channel.send(f"{'-'*50}")
+            await log_channel.send(f"**{msg.author.nick}**(`{msg.author}`)\n{content}")
             for i in msg.attachments:
                 await log_channel.send(i)
             for i in msg.embeds:
                 await log_channel.send(embed=i)
             
-        except Exception:
+        except Exception as e:
             print(msg.content, msg.author)
             print("'logs' channel not found, or bot missing permissions")
+            print(e)
     
 def setup(bot):
     bot.add_cog(logger(bot))
