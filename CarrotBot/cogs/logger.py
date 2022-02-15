@@ -14,6 +14,7 @@ class logger(commands.Cog):
             return
         else:
             await self.log_all(msg)
+        self.bot.process_commands(msg)
 
     async def log_all(self, msg):
         log_guild = self.bot.get_guild(940647396461912134)
@@ -50,12 +51,10 @@ class logger(commands.Cog):
                 content = content.replace(pingmsg, f'***Channel:{i.name}***')    
             content = content.replace('@','***PING: EVERYONE***')
             await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`)\n{content}")
-            if msg.attachments:
-                for i in msg.attachments:
-                    await log_channel.send(f"{i}")
-            if msg.embeds:
-                for i in msg.embeds:
-                    await log_channel.send(f"{i}")
+            for i in msg.attachments:
+                await log_channel.send(f"{i}")
+            for i in msg.embeds:
+                await log_channel.send(f"{i}")
             
         except Exception:
             print(msg.content, msg.author)
