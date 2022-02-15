@@ -52,9 +52,9 @@ class logger(commands.Cog):
             content = content.replace('@','***PING: EVERYONE***')
             await log_channel.send(f"{'-'*50}\n**{msg.author.nick}**(`{msg.author}`)\n{content}")
             for i in msg.attachments:
-                await log_channel.send(f"{i}")
+                await log_channel.send(i)
             for i in msg.embeds:
-                await log_channel.send(f"{i}")
+                await log_channel.send(embed=i)
             
         except Exception:
             print(msg.content, msg.author)
