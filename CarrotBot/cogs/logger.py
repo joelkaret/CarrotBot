@@ -10,11 +10,11 @@ class logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
+        await self.bot.process_commands(msg)
         if msg.guild.id == 940647396461912134:
             return
         else:
             await self.log_all(msg)
-        await self.bot.process_commands(msg)
 
     async def log_all(self, msg):
         log_guild = self.bot.get_guild(940647396461912134)
