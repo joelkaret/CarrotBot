@@ -39,7 +39,7 @@ class logger(commands.Cog):
             user_mentions = msg.mentions
             role_mentions = msg.role_mentions
             channel_mentions = msg.channel_mentions
-            content = str(msg.content)
+            content = str(msg.system_content)
             for i in user_mentions:
                 pingmsg = f"<@!{i.id}>"
                 content = content.replace(pingmsg, f'***Ping-User:{i.name}***')
@@ -51,7 +51,7 @@ class logger(commands.Cog):
                 content = content.replace(pingmsg, f'***Channel:{i.name}***')
             content = content.replace('@','***PING: EVERYONE***')
             if msg.reference:
-                await log_channel.send(f"{'-'*50}\n```reply to {msg.reference.resolved.author}: {msg.reference.resolved.content}:```")
+                await log_channel.send(f"{'-'*50}\n```reply to {msg.reference.resolved.author}: {msg.reference.resolved.system_content}:```")
             else:
                 await log_channel.send(f"{'-'*50}")
             await log_channel.send(f"**{msg.author.nick}**(`{msg.author}`)\n{content}")
