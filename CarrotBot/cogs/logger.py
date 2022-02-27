@@ -10,7 +10,7 @@ class logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
-        await self.bot.process_commands(msg)
+#         await self.bot.process_commands(msg)
         if msg.guild.id == 940647396461912134:
             return
         else:
