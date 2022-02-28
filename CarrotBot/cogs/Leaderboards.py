@@ -103,12 +103,12 @@ class leaderboards(commands.Cog):
     def removeFromLeaderboard(self, file, ign, nameS3):
         uuid = self.usernameToUuid(ign)
         if isinstance(file, list):
-            for j in range(0, len(file):
+            for j in range(0, len(file)):
                 leaderboard = self.csvToArray(self.readCSV(file[j]))
                 try:
-                for i in range (0, len(leaderboard)):
-                    if leaderboard[i][0] == uuid:
-                        leaderboard.pop(i)
+                    for i in range (0, len(leaderboard)):
+                        if leaderboard[i][0] == uuid:
+                            leaderboard.pop(i)
                 except:
                     self.writeCSV(file, leaderboard, nameS3[j])
         else:    
