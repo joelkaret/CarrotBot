@@ -142,7 +142,7 @@ class leaderboards(commands.Cog):
     @commands.command(name="UpdateLeaderboard", 
                       descripition="Updates the leaderboard", 
                       aliases=["UpdLdb","LdbUpd"])
-    @commands.check(is_me)
+    @commands.has_role("Guild Staff")
     async def UpdateLeaderboard(self, ctx):
         channel = self.bot.get_channel(836258539806654544)
         await channel.purge(limit=10)
@@ -187,7 +187,7 @@ class leaderboards(commands.Cog):
             leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
             self.addToLeaderboard(leaderboardFile, ign, winstreak, nameS3)
-            await self.UpdateLeaderboard(ctx)
+#             await self.UpdateLeaderboard(ctx)
         else:
             await ctx.send("Command Failed")
 
@@ -218,7 +218,7 @@ class leaderboards(commands.Cog):
             leaderboardFile = "leaderboard_4v4.csv"
         if nameS3 != "Error":
             self.removeFromLeaderboard(leaderboardFile, ign, nameS3)
-            await self.UpdateLeaderboard(ctx)
+#             await self.UpdateLeaderboard(ctx)
         else:
             await ctx.send("Command Failed")
 
