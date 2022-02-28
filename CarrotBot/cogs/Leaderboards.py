@@ -102,13 +102,23 @@ class leaderboards(commands.Cog):
     
     def removeFromLeaderboard(self, file, ign, nameS3):
         uuid = self.usernameToUuid(ign)
-        leaderboard = self.csvToArray(self.readCSV(file))
-        try:
-            for i in range (0, len(leaderboard)):
-                if leaderboard[i][0] == uuid:
-                    leaderboard.pop(i)
-        except:
-            self.writeCSV(file, leaderboard, nameS3)
+        if isinstance(file, list):
+            for j in range(0, len(file):
+                leaderboard = self.csvToArray(self.readCSV(file[j]))
+                try:
+                for i in range (0, len(leaderboard)):
+                    if leaderboard[i][0] == uuid:
+                        leaderboard.pop(i)
+                except:
+                    self.writeCSV(file, leaderboard, nameS3[j])
+        else:    
+            leaderboard = self.csvToArray(self.readCSV(file))
+            try:
+                for i in range (0, len(leaderboard)):
+                    if leaderboard[i][0] == uuid:
+                        leaderboard.pop(i)
+            except:
+                self.writeCSV(file, leaderboard, nameS3)
 
     def ArrayToString(self, array):
         string = ''
@@ -198,7 +208,20 @@ class leaderboards(commands.Cog):
     async def LeaderboardRemove(self, ctx, mode, ign):
         mode = mode.lower()
         nameS3 = "Error"
-        if mode == "overall":
+        if mode == "all":
+            nameS3 = [self.overallS3, 
+                      self.solosS3, 
+                      self.doublesS3, 
+                      self.threesS3, 
+                      self.foursS3, 
+                      self.fourVSfourS3]
+            leaderboardFile = ["leaderboard_overall.csv", 
+                               "leaderboard_solos.csv", 
+                               "leaderboard_doubles.csv", 
+                               "leaderboard_threes.csv", 
+                               "leaderboard_fours.csv", 
+                               "leaderboard_4v4.csv"]
+        elif mode == "overall":
             nameS3 = self.overallS3
             leaderboardFile = "leaderboard_overall.csv"
         elif mode == "solos":
