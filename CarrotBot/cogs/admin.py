@@ -104,7 +104,14 @@ If you do something stupid, that isn't in the rules, a staff member can still wa
     async def reinstate(self, ctx):
         for filename in os.listdir('CarrotBot/cogs'):
             if filename.endswith('.py'):
-                self.bot.unload_extension(f'cogs.{filename[:-3]}')
+                self.bot.load_extension(f'cogs.{filename[:-3]}')
+
+    @commands.command(name='purge',
+                      description='Purge all',
+                      aliases=['del'])
+    @commands.check(is_me)
+    async def purge(self, ctx, num = 2):
+        await ctx.channel.purge(limit=num)
 
 def setup(bot):
     bot.add_cog(admin(bot))
