@@ -30,8 +30,8 @@ class PremiumTickets(commands.Cog):
                         value=" ".join(message))
         CHANNEL = self.bot.get_channel(958491773825585172)
         msg = await CHANNEL.send(embed=embed)
-        await msg.add_reaction(self.bot.get_emoji(958509779918151690))
-        await msg.add_reaction(self.bot.get_emoji(958509815259332608))
+        await msg.add_reaction("⬇️")
+        await msg.add_reaction("⬆️")
 
 def setup(bot):
     bot.add_cog(PremiumTickets(bot))
