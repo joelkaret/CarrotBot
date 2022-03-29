@@ -26,13 +26,12 @@ class PremiumTickets(commands.Cog):
 
         embed.set_author(name='Carrot Bot', 
                          icon_url='https://images-ext-1.discordapp.net/external/NpXCm8rHLPUP0jk-lrskAJPwGDF-LIZ-Kq6SQ6lO5EQ/%3Fsize%3D256/https/cdn.discordapp.com/avatars/825359434602512388/c884bc5b69225f2319af41207a62c5d9.png')
-        embed.add_field(name=user.mention, 
-                        value={" ".join(message)}, 
-                        )
+        embed.add_field(name=f'@{user.name}', 
+                        value=" ".join(message))
         CHANNEL = self.bot.get_channel(958491773825585172)
         msg = await CHANNEL.send(embed=embed)
-        await msg.add_reaction('<:arrow_down:958509779918151690>')
-        await msg.add_reaction('<:arrow_up:958509815259332608>')
+        await msg.add_reaction(self.bot.get_emoji(958509779918151690))
+        await msg.add_reaction(self.bot.get_emoji(958509815259332608))
 
 def setup(bot):
     bot.add_cog(PremiumTickets(bot))
