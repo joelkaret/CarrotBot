@@ -15,9 +15,9 @@ class GuildJoin(commands.Cog):
                       descripition="Request to join the guild")
     async def GuildJoin(self, ctx, *message):
         role = get(ctx.guild.roles, id=ROLE_ID)
-#         if not role in ctx.author.roles:
-#             await ctx.send(f'{ctx.author.mention} You must be a Public Member to do this. If you think you are, please do !verify (ign) to rectify this issue.')
-#             return
+        if not role in ctx.author.roles:
+            await ctx.send(f'{ctx.author.mention} You must be a Public Member to do this. If you think you are, please do !verify (ign) to rectify this issue.')
+            return
         for i in range(0, len(message)):
             for j in range(0, len(message[i])):
                 if message[i][j] == "@":
