@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
+CHANNEL_ID = 918550313693245470
 
 
 
@@ -36,7 +37,7 @@ class GuildJoin(commands.Cog):
         embed.add_field(name='Discovered guild:', 
                         value=messages[3],
                         inline=False)
-        CHANNEL = self.bot.get_channel(958491773825585172)
+        CHANNEL = self.bot.get_channel(CHANNEL_ID)
         await CHANNEL.send(ctx.author.mention)
         msg = await CHANNEL.send(embed=embed)
         await msg.add_reaction("⬆️")
