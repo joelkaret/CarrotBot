@@ -18,6 +18,7 @@ class GuildJoin(commands.Cog):
                 if message[i][j] == "@":
                     await ctx.send(f'{ctx.author.mention} You may not use an @ in your message.')
                     return
+        message = " ".join(message)
         messages = message.split('/')
         embed = discord.Embed(
             title = f'IGN: {messages[0]}',
