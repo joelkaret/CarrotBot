@@ -20,14 +20,14 @@ class help(commands.Cog):
 
         embed.set_author(name='Carrot Bot', 
                          icon_url='https://images-ext-1.discordapp.net/external/NpXCm8rHLPUP0jk-lrskAJPwGDF-LIZ-Kq6SQ6lO5EQ/%3Fsize%3D256/https/cdn.discordapp.com/avatars/825359434602512388/c884bc5b69225f2319af41207a62c5d9.png')
-        embed.add_field(name='Command \n\nhelp \n\ndaboiz \n\nwhoop \n\n\nGuildJoin', 
+        embed.add_field(name='Command \nhelp \n\ndaboiz \n\nwhoop \n\n\nGuildJoin', 
                         value='⠀', 
                         inline=True)
         embed.add_field(name='Description', 
-                        value='\nSends this message \n\n Pings da boiz.\n\nPings you, with funky message attached. \n\nCreate an embed to join the guild', 
+                        value='Sends this message \n\n Pings da boiz.\n\nPings you, with funky message attached. \n\nCreate an embed to join the guild', 
                         inline=True)
         embed.add_field(name='Paramaters', 
-                            value='\nNone \n\nMessage (no @) \n\nNone \n\n\nIGN / Aliases / Age / Discovered Guild (Include / and if None type None).',
+                            value='None \n\nMessage (no @) \n\nNone \n\n\nIGN / Aliases / Age / Discovered Guild (Include / and if None type None).',
                             inline=True)
         if role in ctx.author.roles:
             embed.add_field(name='⠀', 
