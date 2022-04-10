@@ -14,7 +14,7 @@ class GuildJoin(commands.Cog):
     @commands.command(name="GuildJoin", 
                       descripition="Request to join the guild")
     async def GuildJoin(self, ctx, *message):
-        role = get(guild.roles, id=ROLE_ID)
+        role = get(ctx.guild.roles, id=ROLE_ID)
 #         if not role in ctx.author.roles:
 #             await ctx.send(f'{ctx.author.mention} You must be a Public Member to do this. If you think you are, please do !verify (ign) to rectify this issue.')
 #             return
