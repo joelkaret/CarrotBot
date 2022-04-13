@@ -49,8 +49,13 @@ class GuildJoin(commands.Cog):
         CHANNEL = self.bot.get_channel(CHANNEL_ID)
         await CHANNEL.send(ctx.author.mention)
         msg = await CHANNEL.send(embed=embed)
-        await msg.add_reaction("<:agree:962855687103344690>")
-        await msg.add_reaction("<:disagree:962855799602970687>")
+        for emoji_id in reactions:
+        emoji1 = get(ctx.server.emojis, name="agree")
+        emoji2 = get(ctx.server.emojis, name="disagree")
+        await self.bot.add_reaction(msg, emoji1)
+        await self.bot.add_reaction(msg, emoji2)
+        #await msg.add_reaction("<:agree:962855687103344690>")
+        #await msg.add_reaction("<:disagree:962855799602970687>")
 
 def setup(bot):
     bot.add_cog(GuildJoin(bot))
