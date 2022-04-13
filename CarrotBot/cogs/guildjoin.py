@@ -44,7 +44,7 @@ class GuildJoin(commands.Cog):
                         value=messages[2],
                         inline=False)
         embed.add_field(name='Discovered guild:', 
-                        value=messages[3:],
+                        value= " ".join(messages[3:]),
                         inline=False)
         CHANNEL = self.bot.get_channel(CHANNEL_ID)
         await CHANNEL.send(ctx.author.mention)
