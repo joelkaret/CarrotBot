@@ -49,7 +49,6 @@ class GuildJoin(commands.Cog):
         CHANNEL = self.bot.get_channel(CHANNEL_ID)
         await CHANNEL.send(ctx.author.mention)
         msg = await CHANNEL.send(embed=embed)
-        for emoji_id in reactions:
         emoji1 = get(ctx.server.emojis, name="agree")
         emoji2 = get(ctx.server.emojis, name="disagree")
         await self.bot.add_reaction(msg, emoji1)
