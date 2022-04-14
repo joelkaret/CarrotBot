@@ -121,7 +121,7 @@ If you do something stupid, that isn't in the rules, a staff member can still wa
         if payload.emoji.name == '🏮':
             channel = self.bot.get_channel(payload.channel_id)
             message = await channel.fetch_message(payload.message_id) 
-            await payload.message.delete()
+            await message.delete()
         
 
 def setup(bot):
