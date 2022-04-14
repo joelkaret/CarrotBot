@@ -115,11 +115,11 @@ If you do something stupid, that isn't in the rules, a staff member can still wa
         await ctx.channel.purge(limit=num)
         
     @commands.Cog.listener()
-    async def on_raw_reaction_add(self, reaction, user):
-        if user.id != 506884005195677696:
+    async def on_raw_reaction_add(self, payload):
+        if payload.user.id != 506884005195677696:
             return
-        if reaction == '🏮':
-            await reaction.message.delete()
+        if payload.reaction == '🏮':
+            await payload.reaction.message.delete()
         
 
 def setup(bot):
