@@ -116,10 +116,12 @@ If you do something stupid, that isn't in the rules, a staff member can still wa
         
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        if payload.user.id != 506884005195677696:
+        if payload.user_id != 506884005195677696:
             return
-        if payload.reaction == '🏮':
-            await payload.reaction.message.delete()
+        if payload.emoji == '🏮':
+            channel = self.bot.get_channel(payload.channel_id)
+            message = await channel.fetch_message(payload.message_id)
+            await payload.message.delete()
         
 
 def setup(bot):
