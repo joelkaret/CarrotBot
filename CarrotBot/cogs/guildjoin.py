@@ -39,16 +39,16 @@ class GuildJoin(commands.Cog):
         embed.set_author(name='Carrot Bot', 
                          icon_url='https://images-ext-1.discordapp.net/external/NpXCm8rHLPUP0jk-lrskAJPwGDF-LIZ-Kq6SQ6lO5EQ/%3Fsize%3D256/https/cdn.discordapp.com/avatars/825359434602512388/c884bc5b69225f2319af41207a62c5d9.png')
         embed.add_field(name='Aliases:', 
-                        value=messages[1],
+                        value=f"{messages[1]}",
                         inline=False)
         embed.add_field(name='Age:', 
-                        value=messages[2],
+                        value=f"{messages[2]}",
                         inline=False)
         embed.add_field(name='Discovered guild:', 
-                        value=messages[3]),
+                        value=f"{messages[3]}"),
                         inline=False)
         embed.add_field(name='About me:', 
-                        value=messages[4]),
+                        value=f"{messages[4]}"),
                         inline=False)
         CHANNEL = self.bot.get_channel(CHANNEL_ID)
         await CHANNEL.send(ctx.author.mention)
