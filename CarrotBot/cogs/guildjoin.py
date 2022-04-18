@@ -26,9 +26,10 @@ class GuildJoin(commands.Cog):
         message = " ".join(message)
         messages = message.split('/')
         try:
-            x = messages[3]
+            x = messages[4]
         except:
             await ctx.send(f"{ctx.author.mention} You must seperate arguments with a '/'.")
+            await CTX.send("Please also make sure you have all 5 categories, ign, aliases, age, discovered guild, and about you.")
             return
         embed = discord.Embed(
             title = f'IGN: {messages[0]}',
@@ -44,7 +45,10 @@ class GuildJoin(commands.Cog):
                         value=messages[2],
                         inline=False)
         embed.add_field(name='Discovered guild:', 
-                        value= " ".join(messages[3:]),
+                        value=messages[3]),
+                        inline=False)
+        embed.add_field(name='About me:', 
+                        value=messages[4]),
                         inline=False)
         CHANNEL = self.bot.get_channel(CHANNEL_ID)
         await CHANNEL.send(ctx.author.mention)
